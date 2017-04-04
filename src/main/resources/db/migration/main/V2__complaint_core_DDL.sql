@@ -114,6 +114,7 @@ CREATE TABLE complaint (
     lng double precision,
     status bigint,
     department bigint,
+    comments character varying(1024),
     version bigint
 );
 

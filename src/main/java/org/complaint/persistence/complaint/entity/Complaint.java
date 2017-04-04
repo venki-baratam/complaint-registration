@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import org.complaint.persistence.common.entity.Boundary;
 import org.complaint.persistence.common.entity.Department;
 import org.complaint.persistence.common.entity.Employee;
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -77,6 +78,9 @@ public class Complaint extends AbstractAuditable {
 	@ManyToOne
 	@JoinColumn(name = "department")
 	private Department department;
+	
+	@Length(max=1024)
+	private String comments;
 
 	@Override
 	public Long getId() {

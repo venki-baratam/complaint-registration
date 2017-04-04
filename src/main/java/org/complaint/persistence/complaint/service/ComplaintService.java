@@ -110,6 +110,8 @@ public class ComplaintService {
 
 		Complaint newComplaint = complaintRepository.getOne(complaint.getId());
 
+		newComplaint.setComments(complaint.getComments());
+
 		updateComplaintStatus(newComplaint, complaint.getStatus().getName());
 
 		updateWorkflowUser(newComplaint, complaint.getAssignee().getId());
