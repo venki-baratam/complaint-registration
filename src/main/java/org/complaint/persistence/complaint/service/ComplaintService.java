@@ -105,6 +105,33 @@ public class ComplaintService {
 		return complaint;
 	}
 
+	@Transactional
+	public Complaint updateComplaint(Complaint complaint) {
+
+		Complaint newComplaint = complaintRepository.getOne(complaint.getId());
+
+		updateComplaintStatus(newComplaint, complaint.getStatus().getName());
+
+		updateWorkflowUser(newComplaint, complaint.getAssignee().getId());
+
+		setAuditableFields(newComplaint);
+
+		complaintRepository.save(newComplaint);
+
+		return newComplaint;
+	}
+
+	private void updateWorkflowUser(Complaint complaint, Long assignee) {
+		if (assignee != null && assignee != null)
+			complaint.setAssignee(employeeService.getById(assignee));
+
+	}
+
+	private void updateComplaintStatus(Complaint complaint, String name) {
+		if (name != null && !name.isEmpty())
+			complaint.setStatus(complaintStatusService.getByName(name));
+	}
+
 	private void populateDepartment(Complaint complaint) {
 		if (complaint.getDepartment() != null && complaint.getDepartment().getCode() != null
 				&& !complaint.getDepartment().getCode().isEmpty())
@@ -127,7 +154,7 @@ public class ComplaintService {
 
 	private void populateComplaintStatus(Complaint complaint) {
 		if (complaint.getStatus() != null && complaint.getStatus().getName() != null
-				&& !complaint.getComplaintType().getCode().isEmpty())
+				&& !complaint.getStatus().getName().isEmpty())
 			complaint.setStatus(complaintStatusService.getByName(complaint.getStatus().getName()));
 
 	}

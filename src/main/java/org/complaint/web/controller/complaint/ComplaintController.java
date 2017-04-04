@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,17 @@ public class ComplaintController {
 			return errorResponseEntity;
 
 		return getSuccessResponseForCreate(complaintService.createComplaint(complaint));
+	}
+	
+	@PostMapping("/{id}/_update")
+	@ResponseBody
+	public ResponseEntity<?> update(@RequestBody Complaint complaint, BindingResult bindingResult,@PathVariable(name="id") Long id) {
+
+		ResponseEntity<?> errorResponseEntity = validateComplaintRequest(complaint, bindingResult);
+		if (errorResponseEntity != null)
+			return errorResponseEntity;
+		complaint.setId(id);
+		return getSuccessResponseForCreate(complaintService.updateComplaint(complaint));
 	}
 
 	@GetMapping("_search")

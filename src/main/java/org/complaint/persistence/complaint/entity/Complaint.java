@@ -15,6 +15,8 @@ import org.complaint.persistence.common.entity.Boundary;
 import org.complaint.persistence.common.entity.Department;
 import org.complaint.persistence.common.entity.Employee;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +29,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Table(name = "complaint")
 @SequenceGenerator(name = Complaint.SEQ_COMPLAINT, sequenceName = Complaint.SEQ_COMPLAINT, allocationSize = 1)
+@JsonIgnoreProperties(value = { "handler", "hibernateLazyInitializer" })
 public class Complaint extends AbstractAuditable {
 
 	public static final String SEQ_COMPLAINT = "SEQ_COMPLAINT";
@@ -81,8 +84,8 @@ public class Complaint extends AbstractAuditable {
 	}
 
 	@Override
-	protected void setId(Long id) {
-
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }
